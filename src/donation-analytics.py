@@ -55,7 +55,7 @@ def process_data(source):
         transaction_yr = int(transaction_dt[4:])
         donor_id = donor + zip_code
 
-        # Identify unique donor
+        # New donor
         if donor_id not in unique_donors:
             unique_donors[donor_id] = transaction_yr
             continue
