@@ -24,20 +24,27 @@ def invalid_date(field, format):
     except Exception as e:
         return True
 
+def valid_record(record):
+    zip_code = record[3]
+    transaction_dt = record[4]
+    if not empty_fields(record) and not malformed_field(zip_code, 5) and not invalid_date(transaction_dt, '%m%d%Y'):
+        return True
+
 def write_to_destination(record, destination, delimiter):
     destination.write(delimiter.join(record) + "\n")
 
-def ingest_record(row):
-    record = {}
+def ingest_record(record):
     fields = row.split("|")
     other_id = fields[15]
-    # Process if not an individual contribution
-    if not other_id.strip():
-        return [fields[0], fields[7], fields[10][:5], fields[13], fields[14]]
+    # Process only individual contributions
+    if other_id.strip() != "":
+        record = [fields[0], fields[7], fields[10][:5], fields[13], fields[14]]
+        if valid_record(record):
+            return record
 
 def process_data(source):
-    campaign_data = source.read()
     # var_list = ["recipient", "donor", "zip_code", "transaction_dt", "transaction_amt"]
+    campaign_data = source.read()
     unique_donors = {}
     transactions = {}
     contributions = {}
@@ -47,23 +54,21 @@ def process_data(source):
         if record:
             recipient, donor, zip_code, transaction_dt, transaction_amt = record
             transaction_yr = int(transaction_dt[4:])
-
-            if not empty_fields(record) and not malformed_field(zip_code, 5) and not invalid_date(transaction_dt, '%m%d%Y'):
-                donor_id = donor + zip_code
-                # Identify unique donor
-                if donor_id not in unique_donors:
-                    unique_donors[donor_id] = transaction_yr
-                    continue
-                # Identify repeat donor
-                if donor_id in unique_donors and unique_donors[donor_id] < transaction_yr:
-                    if recipient not in transactions:
-                        transactions[recipient] = 1
-                        contributions[recipient] = int(transaction_amt)
-                    else:
-                        transactions[recipient] += 1
-                        contributions[recipient] += int(transaction_amt)
-                    output = [recipient, zip_code, str(transaction_yr), str(contributions[recipient]), str(transactions[recipient])]
-                    write_to_destination(output, destination, '|')
+            donor_id = donor + zip_code
+            # Identify unique donor
+            if donor_id not in unique_donors:
+                unique_donors[donor_id] = transaction_yr
+                continue
+            # Identify repeat donor
+            if donor_id in unique_donors and unique_donors[donor_id] < transaction_yr:
+                if recipient not in transactions:
+                    transactions[recipient] = 1
+                    contributions[recipient] = int(transaction_amt)
+                else:
+                    transactions[recipient] += 1
+                    contributions[recipient] += int(transaction_amt)
+                output = [recipient, zip_code, str(transaction_yr), str(contributions[recipient]), str(transactions[recipient])]
+                write_to_destination(output, destination, '|')
 
 def clean_up():
     source.close()
