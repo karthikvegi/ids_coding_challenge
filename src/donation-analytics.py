@@ -43,9 +43,9 @@ def ingest_record(row):
 
 def process_data(source):
     campaign_data = source.read()
-    unique_donors = {}
-    transactions = {}
-    contributions = {}
+    donors = {} # Key: donor_id & Value: transaction_yr
+    transactions = {} # Key: recipient & Value: transactions
+    contributions = {} # Key: recipeient & Value: transaction_amt
 
     for row in campaign_data.splitlines():
         record = ingest_record(row)
@@ -57,10 +57,10 @@ def process_data(source):
 
         # New donor
         if donor_id not in unique_donors:
-            unique_donors[donor_id] = transaction_yr
+            donors[donor_id] = transaction_yr
             continue
         # Repeat donor if contributed in prior calendar year
-        elif unique_donors[donor_id] < transaction_yr:
+        elif donors[donor_id] < transaction_yr:
             if recipient not in transactions:
                 transactions[recipient] = 1
                 contributions[recipient] = int(transaction_amt)
