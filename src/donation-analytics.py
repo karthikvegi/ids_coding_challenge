@@ -23,8 +23,3 @@ def invalid_fields(record):
         datetime.strptime(fields[3], '%m%d%Y')
     except Exception as e:
         return True
-
-def clean_up():
-    source.close()
-    destination.close()
-    percentile.close()
