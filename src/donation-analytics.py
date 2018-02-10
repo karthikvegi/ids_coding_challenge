@@ -43,6 +43,7 @@ def ingest_record(row):
 
 def process_data(source):
     campaign_data = source.read()
+    # Data Structures
     donors = {} # Key: donor_id & Value: transaction_yr
     transactions = {} # Key: recipient & Value: transactions
     contributions = {} # Key: recipeient & Value: transaction_amt
