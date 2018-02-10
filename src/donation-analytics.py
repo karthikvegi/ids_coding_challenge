@@ -44,3 +44,12 @@ def ingest_record(row):
         # Validate record before ingestion
         if not empty_fields(record) and not malformed_field(zip_code, 5) and not invalid_date(transaction_dt, '%m%d%Y'):
             return record
+
+def clean_up():
+    source.close()
+    destination.close()
+    percentile.close()
+
+read_from_source(source)
+process_data(campaign_data)
+clean_up()
