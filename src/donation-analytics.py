@@ -7,3 +7,6 @@ destination = open(sys.argv[3], "w")
 
 def read_from_source(source):
     campaign_contributions = source.read()
+
+def write_to_destination(record, destination):
+    destination.write("|".join(record) + "\n")
