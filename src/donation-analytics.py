@@ -2,15 +2,13 @@ import sys
 from datetime import datetime
 
 # Input/Output
-source = open(sys.argv[1], "r")
-percentile = open(sys.argv[2], "r")
-destination = open(sys.argv[3], "w")
-
-campaign_data = []
-
-def read_from_source(source):
-    global campaign_data
-    campaign_data = source.read()
+try:
+    source = open(sys.argv[1], "r")
+    percentile = open(sys.argv[2], "r")
+    destination = open(sys.argv[3], "w")
+except Exception as e:
+    print(e)
+    sys.exit(1)
 
 def write_to_destination(record, destination):
     destination.write("|".join(record) + "\n")
@@ -50,6 +48,5 @@ def clean_up():
     destination.close()
     percentile.close()
 
-read_from_source(source)
-process_data(campaign_data)
+process_data(source)
 clean_up()
