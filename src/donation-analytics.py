@@ -10,3 +10,15 @@ def read_from_source(source):
 
 def write_to_destination(record, destination):
     destination.write("|".join(record) + "\n")
+
+def invalid_fields(record):
+    fields = record.split("|")
+    # Check empty fields
+    if any(map(lambda x: not x.strip(), fields)):
+        return True
+    if len(fields[2].strip()) < 5:
+        return True
+    try:
+        datetime.strptime(fields[3], '%m%d%Y')
+    except Exception as e:
+        return True
