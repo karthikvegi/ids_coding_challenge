@@ -37,7 +37,7 @@ def ingest_record(row):
     fields = row.split("|")
     other_id = fields[15]
     record = [fields[0], fields[7], fields[10][:5], fields[13], fields[14]]
-    # Process only individual contribution and valid records
+    # Process only individual contributions and valid records
     if other_id.strip() == "" and valid_record(record):
         return record
 
@@ -59,9 +59,8 @@ def process_data(source):
         if donor_id not in unique_donors:
             unique_donors[donor_id] = transaction_yr
             continue
-
-        # Identify repeat donor and perform calculations
-        if donor_id in unique_donors and unique_donors[donor_id] < transaction_yr:
+        # Repeat donor if contributed in prior calendar year
+        elif unique_donors[donor_id] < transaction_yr:
             if recipient not in transactions:
                 transactions[recipient] = 1
                 contributions[recipient] = int(transaction_amt)
