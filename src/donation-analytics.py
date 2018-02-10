@@ -50,24 +50,28 @@ def process_data(source):
 
     for row in campaign_data.splitlines():
         record = ingest_record(row)
-        if record:
-            recipient, donor, zip_code, transaction_dt, transaction_amt = record
-            transaction_yr = int(transaction_dt[4:])
-            donor_id = donor + zip_code
-            # Identify unique donor
-            if donor_id not in unique_donors:
-                unique_donors[donor_id] = transaction_yr
-                continue
-            # Identify repeat donor
-            if donor_id in unique_donors and unique_donors[donor_id] < transaction_yr:
-                if recipient not in transactions:
-                    transactions[recipient] = 1
-                    contributions[recipient] = int(transaction_amt)
-                else:
-                    transactions[recipient] += 1
-                    contributions[recipient] += int(transaction_amt)
-                output = [recipient, zip_code, str(transaction_yr), str(contributions[recipient]), str(transactions[recipient])]
-                write_to_destination(output, destination, '|')
+        if not record:
+            continue
+        recipient, donor, zip_code, transaction_dt, transaction_amt = record
+        transaction_yr = int(transaction_dt[4:])
+        donor_id = donor + zip_code
+
+        # Identify unique donor
+        if donor_id not in unique_donors:
+            unique_donors[donor_id] = transaction_yr
+            continue
+
+        # Identify repeat donor and perform calculations
+        if donor_id in unique_donors and unique_donors[donor_id] < transaction_yr:
+            if recipient not in transactions:
+                transactions[recipient] = 1
+                contributions[recipient] = int(transaction_amt)
+            else:
+                transactions[recipient] += 1
+                contributions[recipient] += int(transaction_amt)
+
+            output = [recipient, zip_code, str(transaction_yr), str(contributions[recipient]), str(transactions[recipient])]
+            write_to_destination(output, destination, '|')
 
 def clean_up():
     source.close()
