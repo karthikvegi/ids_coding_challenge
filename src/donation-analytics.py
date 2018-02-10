@@ -28,3 +28,19 @@ def invalid_date(field, format):
         datetime.strptime(field, format)
     except Exception as e:
         return True
+
+def ingest_record(row):
+    fields = row.split("|")
+    other_id = fields[15]
+    # Process the record if not an individual contribution
+    if not other_id.strip():
+        recipient = fields[0]
+        donor = fields[7]
+        zip_code = fields[10][:5]
+        transaction_dt = fields[13]
+        transaction_yr = transaction_dt[4:]
+        transaction_amt = fields[14]
+        record = [recipient, donor, zip_code, transaction_yr, transaction_amt]
+        # Validate record before ingestion
+        if not empty_fields(record) and not malformed_field(zip_code, 5) and not invalid_date(transaction_dt, '%m%d%Y'):
+            return record
