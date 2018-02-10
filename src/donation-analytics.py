@@ -10,6 +10,9 @@ except Exception as e:
     print(e)
     sys.exit(1)
 
+def write_to_destination(record, destination, delimiter):
+    destination.write(delimiter.join(record) + "\n")
+
 def empty_fields(fields):
     if any(map(lambda x: not x.strip(), fields)):
         return True
@@ -30,9 +33,6 @@ def valid_record(record):
     if not empty_fields(record) and not malformed_field(zip_code, 5) and not invalid_date(transaction_dt, '%m%d%Y'):
         return True
 
-def write_to_destination(record, destination, delimiter):
-    destination.write(delimiter.join(record) + "\n")
-
 def ingest_record(record):
     fields = row.split("|")
     other_id = fields[15]
@@ -43,7 +43,6 @@ def ingest_record(record):
             return record
 
 def process_data(source):
-    # var_list = ["recipient", "donor", "zip_code", "transaction_dt", "transaction_amt"]
     campaign_data = source.read()
     unique_donors = {}
     transactions = {}
