@@ -28,19 +28,18 @@ def invalid_date(field, format):
         return True
 
 def valid_record(record):
-    zip_code = record[3]
-    transaction_dt = record[4]
+    zip_code = record[2]
+    transaction_dt = record[3]
     if not empty_fields(record) and not malformed_field(zip_code, 5) and not invalid_date(transaction_dt, '%m%d%Y'):
         return True
 
-def ingest_record(record):
+def ingest_record(row):
     fields = row.split("|")
     other_id = fields[15]
-    # Process only individual contributions
-    if other_id.strip() != "":
-        record = [fields[0], fields[7], fields[10][:5], fields[13], fields[14]]
-        if valid_record(record):
-            return record
+    record = [fields[0], fields[7], fields[10][:5], fields[13], fields[14]]
+    # Process only individual contribution and valid records
+    if other_id.strip() == "" and valid_record(record):
+        return record
 
 def process_data(source):
     campaign_data = source.read()
