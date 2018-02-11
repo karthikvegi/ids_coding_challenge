@@ -1,3 +1,8 @@
+#-------------------------------------------------------------------------------
+# Author: Karthik Vegi
+# Email: karthikvegi@outlook.com
+# Python Version: 3.6
+#-------------------------------------------------------------------------------
 import sys
 from datetime import datetime
 
@@ -57,7 +62,7 @@ def process_data(source):
         donor_id = donor + zip_code
 
         # New donor
-        if donor_id not in unique_donors:
+        if donor_id not in donors:
             donors[donor_id] = transaction_yr
             continue
         # Repeat donor if contributed in prior calendar year
