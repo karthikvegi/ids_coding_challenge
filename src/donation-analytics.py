@@ -4,13 +4,14 @@
 # Python Version: 3.6
 #-------------------------------------------------------------------------------
 import sys
+import math
 from datetime import datetime
 from collections import defaultdict
 
 # Input/Output
 try:
     source = open(sys.argv[1], "r")
-    percentile = open(sys.argv[2], "r")
+    pct_file = open(sys.argv[2], "r")
     destination = open(sys.argv[3], "w")
 except Exception as e:
     print(e)
@@ -47,11 +48,17 @@ def ingest_record(row):
     if other_id.strip() == "" and valid_record(record):
         return record
 
+def compute_percentile(donations, percentile):
+    # Nearest-rank method
+    idx = math.ceil(percentile * 0.01 * len(donations))
+    return donations[idx-1]
+
 def process_data(source):
     campaign_data = source.read()
+    percentile = float(pct_file.read())
     # Data Structures
-    donor_list = {} # Key: donor_id & Value: transaction_yr
-    donation_dict = defaultdict(list) # Key: recipient & Value: list of transactions
+    donor_list = {} # Key: donor_id | Value: transaction_yr
+    donation_dict = defaultdict(list) # Key: recipient | Value: list of transactions
 
     for row in campaign_data.splitlines():
         record = ingest_record(row)
@@ -67,17 +74,18 @@ def process_data(source):
             continue
         # Repeat donor if contributed in prior calendar year
         elif transaction_yr > donor_list[donor_id]:
-            # Accumulate transactions in a list in the dictionary
+            # Accumulate transactions as a list in the dictionary
             donation_dict[recipient].append(int(transaction_amt))
             transaction_cnt = len(donation_dict[recipient])
             contribution = sum(donation_dict[recipient])
-            output = [recipient, zip_code, str(transaction_yr), str(contribution), str(transaction_cnt)]
+            running_percentile = compute_percentile(donation_dict[recipient], percentile)
+            output = [recipient, zip_code, str(transaction_yr), str(running_percentile), str(contribution), str(transaction_cnt)]
             write_to_destination(output, destination, '|')
 
 def clean_up():
     source.close()
     destination.close()
-    percentile.close()
+    pct_file.close()
 
 process_data(source)
 clean_up()
