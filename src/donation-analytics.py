@@ -5,6 +5,7 @@
 #-------------------------------------------------------------------------------
 import sys
 from datetime import datetime
+from collections import defaultdict
 
 # Input/Output
 try:
@@ -49,9 +50,8 @@ def ingest_record(row):
 def process_data(source):
     campaign_data = source.read()
     # Data Structures
-    donors = {} # Key: donor_id & Value: transaction_yr
-    transactions = {} # Key: recipient & Value: transactions
-    contributions = {} # Key: recipeient & Value: transaction_amt
+    donor_list = {} # Key: donor_id & Value: transaction_yr
+    donation_dict = defaultdict(list) # Key: recipient & Value: list of transactions
 
     for row in campaign_data.splitlines():
         record = ingest_record(row)
@@ -62,19 +62,16 @@ def process_data(source):
         donor_id = donor + zip_code
 
         # New donor
-        if donor_id not in donors:
-            donors[donor_id] = transaction_yr
+        if donor_id not in donor_list:
+            donor_list[donor_id] = transaction_yr
             continue
         # Repeat donor if contributed in prior calendar year
-        elif donors[donor_id] < transaction_yr:
-            if recipient not in transactions:
-                transactions[recipient] = 1
-                contributions[recipient] = int(transaction_amt)
-            else:
-                transactions[recipient] += 1
-                contributions[recipient] += int(transaction_amt)
-
-            output = [recipient, zip_code, str(transaction_yr), str(contributions[recipient]), str(transactions[recipient])]
+        elif transaction_yr > donor_list[donor_id]:
+            # Accumulate transactions in a list in the dictionary
+            donation_dict[recipient].append(int(transaction_amt))
+            transaction_cnt = len(donation_dict[recipient])
+            contribution = sum(donation_dict[recipient])
+            output = [recipient, zip_code, str(transaction_yr), str(contribution), str(transaction_cnt)]
             write_to_destination(output, destination, '|')
 
 def clean_up():
