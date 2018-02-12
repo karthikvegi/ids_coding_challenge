@@ -5,6 +5,8 @@
 4. [Considerations](README.md#considerations)
 5. [Data pipeline] (README.md#data-pipeline)
 6. [Unit test cases] (README.md#unit-test-cases)
+6. [Percentile computation](README.md#percentile-computation)
+7. [Example](README.md#example)
 
 # Summary
 
