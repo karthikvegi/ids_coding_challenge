@@ -3,10 +3,8 @@
 2. [Inputs](README.md#inputs)
 3. [Output](README.md#output)
 4. [Considerations](README.md#considerations)
-5. [Data pipeline] (README.md#data-pipeline)
-6. [Unit test cases] (README.md#unit-test-cases)
-6. [Percentile computation](README.md#percentile-computation)
-7. [Example](README.md#example)
+5. [Data Pipeline](README.md#data-pipeline)
+6. [Unit Test Cases](README.md#unit-test-cases)
 
 # Summary
 
