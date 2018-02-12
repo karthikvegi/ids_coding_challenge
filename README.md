@@ -33,8 +33,6 @@ Two input files.
 
 2. `itcont.txt`, has a line for each campaign contribution that was made on a particular date from a donor to a political campaign, committee or other similar entity. 
 
-#### Data dictionary for the campaign contribution file [as described by the FEC](http://classic.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml).
-
 From the campaign contribution file, we are only interested in the below fields:
 
 * `CMTE_ID`: identifies the flier, which for our purposes is the recipient of this contribution
@@ -44,17 +42,7 @@ From the campaign contribution file, we are only interested in the below fields:
 * `TRANSACTION_AMT`: amount of the transaction
 * `OTHER_ID`: a field that denotes whether contribution came from a person or an entity 
 
-
-For the purposes of this challenge, we’re interested in individual contributions. While you're welcome to run your program using the data files found at the FEC's website, you should not assume that we'll be testing your program on any of those data files or that the lines will be in the same order as what can be found in those files. Our test data files, however, will conform to the data dictionary [as described by the FEC](http://classic.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml).
-
-Also, while there are many fields in the file that may be interesting, below are the ones that you’ll need to complete this challenge:
-
-* `CMTE_ID`: identifies the flier, which for our purposes is the recipient of this contribution
-* `NAME`: name of the donor
-* `ZIP_CODE`:  zip code of the contributor (we only want the first five digits/characters)
-* `TRANSACTION_DT`: date of the transaction
-* `TRANSACTION_AMT`: amount of the transaction
-* `OTHER_ID`: a field that denotes whether contribution came from a person or an entity 
+#### Data dictionary for the campaign contribution file [as described by the FEC](http://classic.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml).
 
 ## Output File
 
