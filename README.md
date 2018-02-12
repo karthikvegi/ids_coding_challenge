@@ -2,7 +2,9 @@
 1. [Summary](README.md#summary)
 2. [Inputs](README.md#inputs)
 3. [Output](README.md#output)
-4. [Details](README.md#considerations)
+4. [Considerations](README.md#considerations)
+5. [Data Pipeline] (README.md#data-pipeline)
+6. [Unit Test Cases] (README.md#unit-test-cases)
 
 # Summary
 
@@ -51,3 +53,7 @@ recipient | zip_code | transaction_year | running_percentile | contribution | tr
 * If `ZIP_CODE` is an invalid zip code (i.e., empty, fewer than five digits)
 * If the `NAME` is an invalid name (e.g., empty, malformed)
 * If any lines in the input file contains empty cells in the `CMTE_ID` or `TRANSACTION_AMT` fields
+
+## Data Pipeline
+
+## Unit Test Cases
