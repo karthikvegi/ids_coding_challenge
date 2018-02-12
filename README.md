@@ -1,21 +1,10 @@
 # Insight Data Engineering Coding Challenge
-1. [Introduction](README.md#introduction)
 2. [Challenge summary](README.md#challenge-summary)
 3. [Details of challenge](README.md#details-of-challenge)
 4. [Input files](README.md#input-files)
 5. [Output file](README.md#output-file)
 6. [Percentile computation](README.md#percentile-computation)
-7. [Example](README.md#example)
-8. [Writing clean, scalable and well-tested code](README.md#writing-clean-scalable-and-well-tested-code)
-9. [Repo directory structure](README.md#repo-directory-structure)
-10. [Testing your directory structure and output format](README.md#testing-your-directory-structure-and-output-format)
-11. [Instructions to submit your solution](README.md#instructions-to-submit-your-solution)
-12. [FAQ](README.md#faq)
 
-# Introduction
-You’re a data engineer working for political consultants whose clients are cash-strapped political candidates. They've asked for help analyzing loyalty trends in campaign contributions, namely identifying areas of repeat donors and calculating how much they're spending.
-
-The Federal Election Commission regularly publishes campaign contributions, and while you don’t want to pull specific donors from those files — because using that information for fundraising or commercial purposes is illegal — you want to identify areas (zip codes) that could be sources of repeat campaign contributions. 
 
 # Challenge summary
 
