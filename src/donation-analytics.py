@@ -60,19 +60,21 @@ def process_data(source, destination):
             continue
         recipient, donor, zip_code, transaction_dt, transaction_amt = record
         transaction_yr = int(transaction_dt[4:])
+        transaction_amt = int(round(float(transaction_amt)))
         donor_id = "-".join([donor, zip_code])
         recipient_id = "-".join([recipient, zip_code, str(transaction_yr)])
 
         # New donor
         if donor_id not in donor_list:
             donor_list[donor_id] = transaction_yr
-        # Repeat donor if contributed in prior calendar year
-        # update transaction_yr if transaction found from prior calendar year
+        # Repeat donor
+        # update transaction_yr if current contribution has calendar year prior to previous contribution
         elif transaction_yr < donor_list[donor_id]:
             donor_list[donor_id] = transaction_yr
+        # perform calculations if current contribution has calendar year ahead of the previous contribution
         elif transaction_yr > donor_list[donor_id]:
-            # Accumulate transactions as a list in the dictionary
-            donation_dict[recipient_id].append(int(transaction_amt))
+            # Accumulate contributions as a list in the dictionary
+            donation_dict[recipient_id].append(transaction_amt)
             transaction_cnt = len(donation_dict[recipient_id])
             contribution = sum(donation_dict[recipient_id])
             running_percentile = compute_percentile(donation_dict[recipient_id], percentile)
