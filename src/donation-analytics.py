@@ -8,15 +8,6 @@ import math
 from datetime import datetime
 from collections import defaultdict
 
-# Input/Output
-try:
-    source = open(sys.argv[1], "r")
-    percentile_source = open(sys.argv[2], "r")
-    destination = open(sys.argv[3], "w")
-except Exception as e:
-    print(e)
-    sys.exit(1)
-
 def write_to_destination(record, destination, delimiter):
     destination.write(delimiter.join(record) + "\n")
 
@@ -44,6 +35,7 @@ def valid_record(record):
 
 def compute_percentile(donations, percentile):
     # Nearest-rank method
+    donations.sort()
     idx = math.ceil(percentile * 0.01 * len(donations))
     return donations[idx-1]
 
@@ -55,7 +47,7 @@ def ingest_record(row):
     if other_id.strip() == "" and valid_record(record):
         return record
 
-def process_data(source):
+def process_data(source, destination):
     campaign_data = source.read()
     percentile = float(percentile_source.read())
     # Data Structures
@@ -84,7 +76,7 @@ def process_data(source):
             transaction_cnt = len(donation_dict[recipient_id])
             contribution = sum(donation_dict[recipient_id])
             running_percentile = compute_percentile(donation_dict[recipient_id], percentile)
-            
+
             output = [recipient, zip_code, str(transaction_yr), str(running_percentile), str(contribution), str(transaction_cnt)]
             write_to_destination(output, destination, '|')
 
@@ -93,5 +85,14 @@ def clean_up():
     destination.close()
     percentile_source.close()
 
-process_data(source)
-clean_up()
+if __name__ == "__main__":
+    try:
+        source = open(sys.argv[1], "r")
+        percentile_source = open(sys.argv[2], "r")
+        destination = open(sys.argv[3], "w")
+    except Exception as e:
+        print(e)
+        sys.exit(1)
+
+    process_data(source, destination)
+    clean_up()
