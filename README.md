@@ -39,19 +39,13 @@ recipient | zip_code | transaction_year | running_percentile | contribution | tr
 * `contribution`: total contribution for the recipient in the zip_code and the year
 * `transaction_cnt`: total number of transactions for the recipient in the zip_code and the year
 
-## Details
+## Considerations
 
-#### Repeat Donor
-A donor can be uniquely identified using the name and the zipcode is a repeat donor if he contributed in the prior calendar year
-
-#### Order of records
-Each record should be treated as a streaming record with no chronological order 
-
-#### Input considerations
-
-1. Consider only first 5 digits of zipcode
-2. Skip records with OTHER_ID field not empty (individual contributions only)
-3. Skip processing record if:
+1. A donor can be uniquely identified using the name and the zipcode is a repeat donor if he contributed in the prior calendar year
+2. Each record should be treated as a sequentially streaming record with no chronological order 
+3. Consider only first 5 digits of zipcode
+4. Skip records with OTHER_ID field not empty (individual contributions only)
+5. Skip processing record if:
 
 * If `TRANSACTION_DT` is an invalid date (e.g., empty, malformed)
 * If `ZIP_CODE` is an invalid zip code (i.e., empty, fewer than five digits)
