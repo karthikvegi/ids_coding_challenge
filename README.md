@@ -8,7 +8,7 @@
 
 # Summary
 
-The challenge involves working with the individual campaign contributions file from Federal Election Commission [sample file](https://classic.fec.gov/finance/disclosure/ftpdet.shtml#a2015_2016). The task is to identify repeat donors and compute a few values and write the results to an output file.
+The challenge involves working with the individual campaign contributions file from Federal Election Commission [FEC Website](http://classic.fec.gov/finance/disclosure/ftpdet.shtml). The task is to identify repeat donors and compute a few values and write the results to an output file.
 
 For each recipient, zip code and calendar year, calculate these three values for contributions coming from repeat donors:
 
@@ -55,6 +55,14 @@ Also, while there are many fields in the file that may be interesting, below are
 * `TRANSACTION_DT`: date of the transaction
 * `TRANSACTION_AMT`: amount of the transaction
 * `OTHER_ID`: a field that denotes whether contribution came from a person or an entity 
+
+## Output File
+
+The output file needs to be in the following format:
+
+recipient | zip_code | transaction_year | running_percentile | contribution | transaction_cnt
+
+Example: `C00384516|02895|2018|333|333|1`
 
 ## Percentile computation
 
