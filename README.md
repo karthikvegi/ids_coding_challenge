@@ -62,9 +62,10 @@ The output file needs to be in the following format:
 
 recipient | zip_code | transaction_year | running_percentile | contribution | transaction_cnt
 
-Example: `C00384516|02895|2018|333|333|1`
+    C00384516|02895|2018|333|333|1  
 
-## Percentile computation
+* `running_percentile`: computed using the **nearest-rank method** [as described by Wikipedia](https://en.wikipedia.org/wiki/Percentile).
+* `contribution`: total contribution for the recipient in the zip_code and the year
+* `transaction_cnt`: total number of transactions for the recipient in the zip_code and the year
 
-The first line of `percentile.txt` contains the percentile you should compute for these given input pair. For the percentile computation use the **nearest-rank method** [as described by Wikipedia](https://en.wikipedia.org/wiki/Percentile).
 
