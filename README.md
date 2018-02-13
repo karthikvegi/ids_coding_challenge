@@ -72,3 +72,7 @@ The data pipeline consists of 3 steps which have been added as functions:
   - Else we add the recipient to the dictionary along with the transaction amounts
 
 ## Test Cases
+
+1. Tested the program using the files from FEC website for the year 2016 and 2017
+2. Tested the cases where the chronological ordering of records is changed
+3. Tested the cases where the recipients are from different zip_code or different year 
