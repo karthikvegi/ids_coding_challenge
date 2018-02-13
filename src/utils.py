@@ -6,7 +6,7 @@
 import math
 from datetime import datetime
 
-def write_to_destination(output, destination, delimiter):
+def send_to_destination(output, destination, delimiter):
     destination.write(delimiter.join(output) + "\n")
 
 def empty_fields(fields):

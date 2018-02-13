@@ -56,7 +56,7 @@ def compute_stats(record):
     total_donation = sum(donation_dict[record['recipient_id']])
     pct = compute_percentile(donation_dict[record['recipient_id']], percentile)
     output = [record['recipient'], record['zip_code'], str(record['transaction_yr']), str(pct), str(total_donation), str(trans_cnt)]
-    write_to_destination(output, destination, '|')
+    send_to_destination(output, destination, '|')
 
 if __name__ == "__main__":
     try:
