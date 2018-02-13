@@ -59,7 +59,7 @@ recipient | zip_code | transaction_year | running_percentile | contribution | tr
 The data pipeline consists of 3 steps which have been added as functions:
 1. ingest_record: This function will take a record, validate it, reads in required fields
 2. process_record: This function will take the valid record and process it to handle new donor and repeat donor
-3. compute_stats: This function will compute the required stats and write it to the output file
+3. compute_stats: This function will compute the required stats and hands it over to the destination
 
 #### Algorithm and Data Structures:
 
