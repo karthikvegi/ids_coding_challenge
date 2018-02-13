@@ -23,11 +23,6 @@ def invalid_date(field, format):
     except Exception as e:
         return True
 
-def print_summary_statistics(stats):
-    print("***** Data Pipeline Complete *****")
-    print("Records Processed: ", stats[0])
-    print("Records Skipped: ", stats[1])
-
 def compute_percentile(donations, percentile):
     # Nearest-rank method
     donations.sort()
