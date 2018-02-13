@@ -61,6 +61,8 @@ The data pipeline consists of 3 steps which have been added as functions:
 2. process_record: This function will take the valid record and process it to handle new donor and repeat donor
 3. compute_stats: This function will compute the required stats and hands it over to the destination
 
+#### The solution does not use any packages or have any dependencies
+
 #### Algorithm and Data Structures:
 
 1. The core algorithm uses two dictionaries which help us access elements in constant time
@@ -75,4 +77,4 @@ The data pipeline consists of 3 steps which have been added as functions:
 
 1. Tested the program using the files from FEC website for the year 2016 and 2017
 2. Tested the cases where the chronological ordering of records is changed
-3. Tested the cases where the recipients are from different zip_code or different year 
+3. Tested the cases where the recipients are from different zip_code or different year
