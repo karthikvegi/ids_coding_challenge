@@ -23,8 +23,7 @@ def invalid_date(field, format):
     except Exception as e:
         return True
 
-def compute_percentile(donations, percentile):
-    # Nearest-rank method
-    donations.sort()
-    idx = math.ceil(percentile * 0.01 * len(donations))
-    return donations[idx-1]
+# Nearest-rank method percentile
+def get_ordinal_rank(ord_list, percentile):
+    idx = int(math.ceil(percentile * 0.01 * len(ord_list)))
+    return (idx-1)

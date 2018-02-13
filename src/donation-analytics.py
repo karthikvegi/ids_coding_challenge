@@ -5,6 +5,7 @@
 #-------------------------------------------------------------------------------
 import sys
 import math
+import bisect
 from utils import *
 from collections import defaultdict
 
@@ -48,14 +49,17 @@ def process_record(record):
         donor_dict[record['donor_id']] = transaction_yr
     # Repeat Donor
     elif transaction_yr > donor_dict[record['donor_id']]:
-        donation_dict[record['recipient_id']].append(transaction_amt)
+        # ordered list of donations
+        bisect.insort(donation_dict[record['recipient_id']], transaction_amt)
         compute_stats(record)
 
 def compute_stats(record):
-    trans_cnt = len(donation_dict[record['recipient_id']])
-    total_donation = sum(donation_dict[record['recipient_id']])
-    pct = compute_percentile(donation_dict[record['recipient_id']], percentile)
-    output = [record['recipient'], record['zip_code'], str(record['transaction_yr']), str(pct), str(total_donation), str(trans_cnt)]
+    donation_list = donation_dict[record['recipient_id']]
+    trans_cnt = len(donation_list)
+    total_donation = sum(donation_list)
+    ord_rank = get_ordinal_rank(donation_list, percentile)
+    running_pctl = donation_list[ord_rank]
+    output = [record['recipient'], record['zip_code'], str(record['transaction_yr']), str(running_pctl), str(total_donation), str(trans_cnt)]
     send_to_destination(output, destination, '|')
 
 if __name__ == "__main__":
