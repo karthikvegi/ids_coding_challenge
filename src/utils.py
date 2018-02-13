@@ -6,8 +6,8 @@
 import math
 from datetime import datetime
 
-def write_to_destination(record, destination, delimiter):
-    destination.write(delimiter.join(record) + "\n")
+def write_to_destination(output, destination, delimiter):
+    destination.write(delimiter.join(output) + "\n")
 
 def empty_fields(fields):
     if any(map(lambda x: not x.strip(), fields)):
