@@ -4,6 +4,7 @@
 # Python Version: 3.6
 #-------------------------------------------------------------------------------
 import sys
+import csv
 import math
 import bisect
 from utils import *
@@ -23,16 +24,15 @@ def valid_record(record):
         return True
 
 def ingest_record(row):
-    cols = row.split("|")
     record = {}
     # Create a dictionary with fields for easy access
-    record['recipient'] = cols[0]
-    record['donor'] = cols[7]
-    record['zip_code'] = cols[10][:5]
-    record['transaction_dt'] = cols[13]
-    record['transaction_yr'] = cols[13][4:]
-    record['transaction_amt'] = cols[14]
-    record['other_id'] = cols[15]
+    record['recipient'] = row[0]
+    record['donor'] = row[7]
+    record['zip_code'] = row[10][:5]
+    record['transaction_dt'] = row[13]
+    record['transaction_yr'] = row[13][4:]
+    record['transaction_amt'] = row[14]
+    record['other_id'] = row[15]
     record['donor_id'] = record['donor'] + record['zip_code']
     record['recipient_id'] = record['recipient'] + record['zip_code'] + str(record['transaction_yr'])
     if valid_record(record):
@@ -55,11 +55,11 @@ def process_record(record):
 
 def compute_stats(record):
     donation_list = donation_dict[record['recipient_id']]
-    trans_cnt = len(donation_list)
+    donation_cnt = len(donation_list)
     total_donation = sum(donation_list)
     ord_rank = get_ordinal_rank(donation_list, percentile)
     running_pctl = donation_list[ord_rank]
-    output = [record['recipient'], record['zip_code'], str(record['transaction_yr']), str(running_pctl), str(total_donation), str(trans_cnt)]
+    output = [record['recipient'], record['zip_code'], str(record['transaction_yr']), str(running_pctl), str(total_donation), str(donation_cnt)]
     send_to_destination(output, destination, '|')
 
 if __name__ == "__main__":
@@ -78,7 +78,7 @@ if __name__ == "__main__":
     # Data Structures
     donor_dict = {} # Key: donor_id | Value: transaction_yr
     donation_dict = defaultdict(list) # Key: recipient | Value: list of transactions
-    for row in source.read().splitlines():
+    for row in csv.reader(source, delimiter='|'):
         ingest_record(row)
 
     clean_up()
